@@ -41,7 +41,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-15"
+<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-16"
      ipr="trust200902" submissionType="IETF" consensus="true">
   <!-- ipr="full3978"-->
 
@@ -138,7 +138,7 @@
       </address>
     </author>
 
-    <date day="01" month="October" year="2025"/>
+    <date day="12" month="January" year="2026"/>
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -1064,41 +1064,41 @@
 
         <figure title="IOAM Integrity Protection Methods">
           <artwork>
-+======+===============+=========================+===============+
-| ID   | Description   | Protected Header Fields | Reference     |
-+======+===============+=========================+===============+
-| 0x00 | See Section 5 | Pre-allocated Trace and | This document |
-|      |               | Incremental Trace:      |               |
-|      |               | - Namespace-ID          |               |
-|      |               |   (mask = 0xffff)       |               |
-|      |               | - NodeLen + Flags +     |               |
-|      |               |   RemainingLen          |               |
-|      |               |   (mask = 0xfb00)       |               |
-|      |               | - IOAM-Trace-Type       |               |
-|      |               |   (mask = 0xffffff)     |               |
-|      |               | - Reserved              |               |
-|      |               |   (mask = 0x00)         |               |
-|      |               |                         |               |
-|      |               | POT:                    |               |
-|      |               | - Namespace-ID          |               |
-|      |               |   (mask = 0xffff)       |               |
-|      |               | - IOAM-POT-Type         |               |
-|      |               |   (mask = 0xff)         |               |
-|      |               |   IOAM-POT-Flags        |               |
-|      |               |   (mask = 0x00)         |               |
-|      |               |                         |               |
-|      |               | E2E:                    |               |
-|      |               | - Namespace-ID          |               |
-|      |               |   (mask = 0xffff)       |               |
-|      |               | - IOAM-E2E-Type         |               |
-|      |               |   (mask = 0xffff)       |               |
-+------+---------------+-------------------------+---------------+
-| 0x01 |               |                         |               |
-|  -   | Unassigned    |                         |               |
-| 0xFE |               |                         |               |
-+------+---------------+-------------------------+---------------+
-| 0xFF | Reserved      |                         | This document |
-+------+---------------+-------------------------+---------------+
++======+==================+=========================+================+
+| ID   | Description      | Protected Header Fields | Reference      |
++======+==================+=========================+================+
+| 0x00 | IPM 0: AES-GMAC, | Pre-allocated Trace and | This document, |
+|      | 16-octet (full)  | Incremental Trace:      | Section 5      |
+|      | Authentication   | - Namespace-ID          |                |
+|      | Tag, 12-octet    |   (mask = 0xffff)       |                |
+|      | Initialization   | - NodeLen + Flags +     |                |
+|      | Vector.          |   RemainingLen          |                |
+|      |                  |   (mask = 0xfb00)       |                |
+|      |                  | - IOAM-Trace-Type       |                |
+|      |                  |   (mask = 0xffffff)     |                |
+|      |                  | - Reserved              |                |
+|      |                  |   (mask = 0x00)         |                |
+|      |                  |                         |                |
+|      |                  | POT:                    |                |
+|      |                  | - Namespace-ID          |                |
+|      |                  |   (mask = 0xffff)       |                |
+|      |                  | - IOAM-POT-Type         |                |
+|      |                  |   (mask = 0xff)         |                |
+|      |                  |   IOAM-POT-Flags        |                |
+|      |                  |   (mask = 0x00)         |                |
+|      |                  |                         |                |
+|      |                  | E2E:                    |                |
+|      |                  | - Namespace-ID          |                |
+|      |                  |   (mask = 0xffff)       |                |
+|      |                  | - IOAM-E2E-Type         |                |
+|      |                  |   (mask = 0xffff)       |                |
++------+------------------+-------------------------+----------------+
+| 0x01 |                  |                         |                |
+|  -   | Unassigned       |                         |                |
+| 0xFE |                  |                         |                |
++------+------------------+-------------------------+----------------+
+| 0xFF | Reserved         |                         | This document  |
++------+------------------+-------------------------+----------------+
           </artwork>
         </figure> Code points 1-254 are available for assignment via the "IETF
         Review" process, as per <xref target="RFC8126"/>.</t>
