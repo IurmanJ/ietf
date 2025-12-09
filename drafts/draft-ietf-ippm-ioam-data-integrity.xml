@@ -41,7 +41,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-15"
+<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-16"
      ipr="trust200902" submissionType="IETF" consensus="true">
   <!-- ipr="full3978"-->
 
@@ -138,7 +138,7 @@
       </address>
     </author>
 
-    <date day="01" month="October" year="2025"/>
+    <date day="09" month="December" year="2025"/>
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -1067,7 +1067,7 @@
 +======+===============+=========================+===============+
 | ID   | Description   | Protected Header Fields | Reference     |
 +======+===============+=========================+===============+
-| 0x00 | See Section 5 | Pre-allocated Trace and | This document |
+| 0x00 | IPM 0         | Pre-allocated Trace and | This document |
 |      |               | Incremental Trace:      |               |
 |      |               | - Namespace-ID          |               |
 |      |               |   (mask = 0xffff)       |               |
