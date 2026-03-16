@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-16"
+<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-17"
      ipr="trust200902" submissionType="IETF" consensus="true">
   <!-- ipr="full3978"-->
 
@@ -141,7 +141,7 @@
       </address>
     </author>
 
-    <date day="23" month="February" year="2026"/>
+    <date day="16" month="March" year="2026"/>
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -1216,7 +1216,10 @@
         Integrity Protection Method MUST ensure that such overload situations
         are avoided. This may, for example, be achieved by applying IOAM only to
         a subset of the entire traffic, keeping in mind that only that IOAM
-        subet would be integrity protected.</t>
+        subet would be integrity protected. In addition, integrity protection
+        workload may be distributed across multiple Validators, enabling
+        validation jobs to be parallelized and the processing load to be shared.
+        </t>
       </section>
 
       <section title="Migration">
@@ -1249,6 +1252,14 @@
       <xref target="AES"/> <xref target="NIST.800-38D"/>. Security
       considerations regarding key and nonce management are discussed in
       <xref target="IPM-KNM"/>.</t>
+
+      <t>Packet reordering or duplication does not compromise the safety of the
+      Integrity Protection Method defined in this document, as key-nonce reuse
+      is not allowed. However, reordered or duplicated packets are not
+      considered for integrity protection, resulting in no IOAM data being
+      inserted for those packets. This behavior depends on the replay protection
+      window implemented by a node, which determines the tolerance for packet
+      reordering. </t>
 
       <t>A compromised transit node could remove the Integrity Protection header
       and replace the IOAM Integrity-Protected Option-Type with the unprotected
@@ -1291,8 +1302,8 @@
     <section title="Acknowledgements">
       <t>The authors would like to thank Santhosh N, Rakesh Kandula, Saiprasad
       Muchala, Al Morton, Greg Mirsky, Benjamin Kaduk, Mehmet Beyaz,
-      Martin Duke, Tianran Zhou, and Giuseppe Fioccola for their comments and
-      advice.</t>
+      Martin Duke, Tianran Zhou, Giuseppe Fioccola, Mohamed Boucadair, and
+      Yoshifumi Nishida for their comments and advice.</t>
     </section>
   </middle>
 
