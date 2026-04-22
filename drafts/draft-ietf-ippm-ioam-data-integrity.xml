@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-17"
+<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-18"
      ipr="trust200902" submissionType="IETF" consensus="true">
   <!-- ipr="full3978"-->
 
@@ -141,7 +141,7 @@
       </address>
     </author>
 
-    <date day="16" month="March" year="2026"/>
+    <date day="22" month="April" year="2026"/>
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -240,12 +240,12 @@
           be applied to all traffic that a router forwards).</t>
 
           <t>IOAM data is carried within packets. Additional space
-          required to prove integrity of the IOAM-Data-Fields SHOULD be
+          required to prove integrity of the IOAM-Data-Fields should be
           optimal, i.e., should not exceed the Maximum Transmission Unit (MTU)
           inside the IOAM-Domain or have adverse effect on packet processing.
           Specifically, fragmentation should be avoided.</t>
 
-          <t>Protection against replay of old IOAM data SHOULD be possible.
+          <t>Protection against replay of old IOAM data should be possible.
           Without replay protection, a rogue node can present the old IOAM
           data, masking any ongoing network issues/activity and making the
           IOAM-Data-Fields collection useless.</t>
@@ -325,10 +325,10 @@
       Generally speaking, the impact of a successful attack on an OAM protocol
       <xref target="RFC7276"/> is an illusion of nonexistent failures (or
       disruption) or
-      preventing the detection of actual ones; in both cases, the attack may
+      preventing the detection of actual ones; in both cases, the attack could
       result in Denial-of-Service (DoS). Furthermore, creating the
-      illusion of a nonexistent issue may trigger unnecessary processing in
-      some of the IOAM nodes along a forwarding path, and may cause more
+      illusion of a nonexistent issue could trigger unnecessary processing in
+      some of the IOAM nodes along a forwarding path, and could cause more
       IOAM-related
       data to be exported to the management plane than is conventionally
       necessary. Beyond these general impacts, threat-specific impacts are
@@ -368,7 +368,7 @@
 
         <t>Threat <list hangIndent="10" style="empty">
             <t>An attacker can modify the fields of an IOAM Option-Type header
-            in order to change or disrupt the
+            to change or disrupt the
             behavior of nodes processing IOAM-Data-Fields along the path, or
             change the interpretation of IOAM-Data-Fields.
             The modification can either be applied to all packets or selectively
@@ -376,7 +376,7 @@
           </list></t>
 
         <t>Impact <list hangIndent="10" style="empty">
-            <t>Changing the fields of an IOAM Option-Type header may have
+            <t>Changing the fields of an IOAM Option-Type header might have
             several implications. The following list of examples is not
             exhaustive. An
             attacker could maliciously increase the processing overhead in nodes
@@ -473,7 +473,7 @@
             <t>By systematically removing IOAM Option-Type headers from some or
             all of the in-transit packets, an attacker can make telemetry
             recording incomplete or even impossible. As a consequence, network
-            diagnosis may be incomplete or non-existent.</t>
+            diagnosis could be incomplete or non-existent.</t>
           </list></t>
       </section>
 
@@ -485,7 +485,7 @@
         <t>Threat <list hangIndent="10" style="empty">
             <t>In addition to replaying old packets in general, an attacker can
             replay packets with IOAM-Data-Fields.
-            Specifically, an attacker may replay a previously transmitted IOAM
+            Specifically, an attacker could replay a previously transmitted IOAM
             Option-Type header with a new data packet, therefore attaching old
             IOAM-Data-Fields to a fresh user packet.</t>
           </list></t>
@@ -531,12 +531,12 @@
           </list></t>
 
         <t>Threat <list hangIndent="10" style="empty">
-            <t>An attacker may delay some or all of the in-transit
-            packets that include IOAM-Data-Fields in order to create an
+            <t>An attacker might delay some or all of the in-transit
+            packets that include IOAM-Data-Fields to create an
             illusion of congestion. Delay attacks are well known in the
             context of deterministic networks <xref
             target="RFC9055"/> and time synchronization <xref
-            target="RFC7384"/>, and may be somewhat mitigated in these
+            target="RFC7384"/>, and could be somewhat mitigated in these
             environments by using redundant paths in a way that is resilient
             to an attack along one of the paths. This approach does not
             address the threat in the context of IOAM, as it does not meet the
@@ -896,7 +896,7 @@
         approximately 143 days with 64-byte packets. For 256 distinct keys of an
         encapsulating node, it would take 1792 and 100 years respectively. This
         is a worst-case scenario, as such link capacity is not common and IOAM
-        may not be applied to all packets.</t>
+        might not be applied to all packets.</t>
       </section>
 
       <section anchor="IPM-header-fields"
@@ -920,7 +920,7 @@
         AND operation) are defined in <xref target="IOAM-IP-registry"/>.</t>
 
         <t>For interoperability, having a dynamic registry to specify which
-        header fields participate in integrity protection may not seem optimal
+        header fields participate in integrity protection might not seem optimal
         at first glance. However, from a vendor perspective, integrity
         protection is simply a feature built on top of IOAM. Therefore, if two
         different vendors providing IOAM integrity protection are not
@@ -1068,12 +1068,13 @@
         following the previous steps (in the same order) of this Integrity
         Protection Method, using the respective symmetric keys received
         previously. The recomputed ICV is then compared to the received ICV
-        field. As a result, a Validator can detect if the integrity of
-        IOAM-Data-Fields is intact or altered. The validation is one-step in
+        field. As a result, a Validator can perform an integrity check on the
+        IOAM-Data-Fields and report whether any modification is detected.
+        The validation is one-step in
         some cases (e.g., with POT Type-0 or E2E), where only the encapsulating
         node updates the ICV according to the definition of this method. For
         other cases where transit nodes also update the ICV (e.g., with Trace
-        Option-Types), a Validator MUST identify these transit nodes in order
+        Option-Types), a Validator MUST identify these transit nodes
         to look up their respective keys. For that, a unique identifier of the
         node, such as the "node_id" (<xref target="RFC9197"/>, Section 4.4.2)
         for Trace Option-Types, MUST be included in
@@ -1209,15 +1210,15 @@
         for any Validator with Integrity-Protected Option-Types where transit
         nodes participate in integrity protection (e.g., Integrity-Protected
         Trace Option-Types). Inappropriate
-        use of this Integrity Protection Method may overload nodes and cause
+        use of this Integrity Protection Method could overload nodes and cause
         service degradation or failure. Therefore, relevant metrics (e.g., CPU
         and memory utilization) SHOULD be monitored to detect misbehaving
         implementations. Operators deploying IOAM with this
         Integrity Protection Method MUST ensure that such overload situations
-        are avoided. This may, for example, be achieved by applying IOAM only to
-        a subset of the entire traffic, keeping in mind that only that IOAM
-        subet would be integrity protected. In addition, integrity protection
-        workload may be distributed across multiple Validators, enabling
+        are avoided. This might, for example, be achieved by applying IOAM only
+        to a subset of the entire traffic, keeping in mind that only that IOAM
+        subset would be integrity protected. In addition, integrity protection
+        workload could be distributed across multiple Validators, enabling
         validation jobs to be parallelized and the processing load to be shared.
         </t>
       </section>
@@ -1227,9 +1228,9 @@
         Integrity-Protected Option-Types defined in this document are not
         mutually exclusive. They can both coexist inside an IOAM-Domain, as
         integrity protection is seen as a feature running on top of IOAM. For
-        example, an implementation may support the simultaneous configuration of
-        an IOAM-Namespace with the Pre-allocated Trace Option-Type and another
-        IOAM-Namespace with the Integrity-Protected Pre-allocated Trace
+        example, an implementation might support the simultaneous configuration
+        of an IOAM-Namespace with the Pre-allocated Trace Option-Type and
+        another IOAM-Namespace with the Integrity-Protected Pre-allocated Trace
         Option-Type.</t>
       </section>
 
