@@ -8,7 +8,6 @@
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC7276 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7276.xml">
 <!ENTITY RFC7384 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7384.xml">
-<!ENTITY RFC7799 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7799.xml">
 <!ENTITY RFC8126 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml">
 <!ENTITY RFC8174 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml">
 <!ENTITY RFC9055 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9055.xml">
@@ -44,7 +43,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-18"
+<rfc category="std" docName="draft-ietf-ippm-ioam-data-integrity-19"
      ipr="trust200902" submissionType="IETF" consensus="true">
   <!-- ipr="full3978"-->
 
@@ -141,7 +140,7 @@
       </address>
     </author>
 
-    <date day="22" month="April" year="2026"/>
+    <date day="11" month="May" year="2026"/>
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -191,26 +190,11 @@
       network domain. The term "In Situ" refers to the fact that
       the OAM data is added to the data packets rather than being sent
       within packets specifically dedicated to OAM (a.k.a. In-Data-Packet OAM
-      <xref target="I-D.ietf-opsawg-oam-characterization"/>). IOAM is used
-      to complement OAM mechanisms such as Ping or Traceroute
-      <xref target="RFC7276"/>.
-      In terms of "active" or "passive" OAM, In Situ OAM can be considered a
-      hybrid OAM type <xref target="RFC7799"/>. In Situ mechanisms do not
-      require extra packets to be
-      sent. IOAM adds information to the already available data packets and,
-      therefore, cannot be considered passive. In terms of the classification
-      given in <xref target="RFC7799"/>, IOAM could be portrayed as Hybrid Type
-      I. IOAM mechanisms can be leveraged where mechanisms using, e.g., ICMP do
-      not apply or do not offer the desired results, such as verifying that a
-      certain traffic flow takes a pre-defined forwarding path,
-      Service Level Agreement (SLA) verification for the
-      data traffic, detailed statistics on traffic distribution paths in
-      networks that distribute traffic across multiple paths, or scenarios in
-      which probe traffic is potentially handled differently from regular data
-      traffic by the network devices.</t>
+      <xref target="I-D.ietf-opsawg-oam-characterization"/>).</t>
 
-      <t>IOAM is deployed inside an IOAM-Domain. An IOAM-Domain is a set of
-      nodes that use IOAM and is bounded by its edges.
+      <t>IOAM is deployed inside an IOAM-Domain, which consists of a set of
+      nodes that use IOAM. The boundaries of the IOAM-Domain are formed by IOAM
+      control points, as defined in <xref target="RFC9197"/>.
       It is expected that all nodes in an IOAM-Domain are managed by the
       same administrative entity, that has means to select, monitor, and
       control access to all the networking devices.
@@ -239,11 +223,11 @@
           feasible at data plane processing/forwarding rates (IOAM may
           be applied to all traffic that a router forwards).</t>
 
-          <t>IOAM data is carried within packets. Additional space
-          required to prove integrity of the IOAM-Data-Fields should be
-          optimal, i.e., should not exceed the Maximum Transmission Unit (MTU)
-          inside the IOAM-Domain or have adverse effect on packet processing.
-          Specifically, fragmentation should be avoided.</t>
+          <t>IOAM data is carried within packets. The additional space required
+          to provide integrity protection of the IOAM-Data-Fields must not cause
+          packets to exceed the applicable Maximum Transmission Unit (MTU)
+          within the IOAM-Domain and should minimize adverse effects on packet
+          processing.</t>
 
           <t>Protection against replay of old IOAM data should be possible.
           Without replay protection, a rogue node can present the old IOAM
@@ -255,8 +239,7 @@
       <t>This document defines a method to protect the integrity of
       IOAM-Data-Fields for Intra-IOAM-Domain use cases, using the IOAM
       Option-Types specified in
-      <xref target="RFC9197"/> as an example. The
-      method will similarly apply to future IOAM Option-Types.</t>
+      <xref target="RFC9197"/> as an example.</t>
     </section>
 
     <section anchor="Conventions" title="Conventions">
@@ -309,23 +292,23 @@
       <t>This document is focused on integrity protection for IOAM-Data-Fields.
       Thus, the threat analysis includes threats that are related to or
       result from compromising the integrity of IOAM-Data-Fields. Other
-      security aspects such as confidentiality are not within the scope of
-      this document.</t>
+      security aspects such as confidentiality are out of scope.</t>
 
       <t>Throughout the analysis there is a distinction between on-path and
       off-path attackers. As discussed in <xref
       target="RFC9055"/>, on-path attackers are located in a
       position that allows interception, modification, or dropping of in-flight
       protocol packets, whereas off-path attackers can only attack by generating
-      protocol packets. Since IOAM operates within IOAM-Domains, this reduces
-      potential attack vectors and should naturally mitigate off-path
-      threats.</t>
+      protocol packets. Since IOAM operates within administratively controlled
+      IOAM-Domains that define a trust boundary, this reduces potential attack
+      vectors and should naturally mitigate off-path threats.</t>
 
       <t>The analysis also includes the impact of each of the threats.
       Generally speaking, the impact of a successful attack on an OAM protocol
       <xref target="RFC7276"/> is an illusion of nonexistent failures (or
       disruption) or
-      preventing the detection of actual ones; in both cases, the attack could
+      preventing the detection of actual ones, as described in Section 9 of
+      <xref target="RFC9197"/>; in both cases, the attack could
       result in Denial-of-Service (DoS). Furthermore, creating the
       illusion of a nonexistent issue could trigger unnecessary processing in
       some of the IOAM nodes along a forwarding path, and could cause more
@@ -376,29 +359,31 @@
           </list></t>
 
         <t>Impact <list hangIndent="10" style="empty">
-            <t>Changing the fields of an IOAM Option-Type header might have
-            several implications. The following list of examples is not
-            exhaustive. An
-            attacker could maliciously increase the processing overhead in nodes
-            that process IOAM-Data-Fields and increase the on-the-wire overhead
-            of IOAM-Data-Fields, by modifying the IOAM Trace-Type field
-            (<xref target="RFC9197"/>, Section 4.4.1) in the
-            IOAM Trace Option-Type header. An attacker could also prevent some
-            of the nodes that process IOAM-Data-Fields from incorporating
-            IOAM-Data-Fields, by modifying the RemainingLen field
-            (<xref target="RFC9197"/>, Section 4.4.1) in the IOAM
-            Trace Option-Type header. Another possibility for the attacker is to
-            change the definition or interpretation of IOAM-Data-Fields by
-            modifying the Namespace-ID field
-            (<xref target="RFC9197"/>, Section 4.3), which is common to all IOAM
-            Option-Type headers. Without the right context (i.e.,
-            Namespace-ID), IOAM-Data-Fields cannot be reliably interpreted, just
-            like data without
-            metadata. An attacker could also cause a Denial-of-Service by
-            setting the Loopback flag (<xref target="RFC9322"/>, Section 3)
-            in the IOAM Trace Option-Type header so that copies of packets are
-            sent back by each node to the encapsulating node. Note that the
-            modification of the header can cause impacts similar to those
+            <t>Modification of fields in an IOAM Option-Type header can have
+            multiple impacts. The following examples are non-exhaustive.</t>
+
+            <t>An attacker that modifies the Namespace-ID field
+            (<xref target="RFC9197"/>, Section 4.3), common to all IOAM
+            Option-Type headers, can alter the definition and interpretation
+            of IOAM-Data-Fields. Without the correct Namespace-ID,
+            IOAM-Data-Fields cannot be reliably interpreted.</t>
+
+            <t>An attacker that modifies the Trace-Type field
+            (<xref target="RFC9197"/>, Section 4.4.1) of the IOAM Trace
+            Option-Type header can increase node processing overhead for
+            IOAM-Data-Fields and increase on-the-wire overhead.</t>
+
+            <t>An attacker that modifies the RemainingLen field
+            (<xref target="RFC9197"/>, Section 4.4.1) of the IOAM Trace
+            Option-Type header can prevent nodes from incorporating
+            IOAM-Data-Fields.</t>
+
+            <t>An attacker that sets the Loopback flag
+            (<xref target="RFC9322"/>, Section 3) in the IOAM Trace Option-Type
+            header can cause a Denial-of-Service by inducing each node to send
+            packet copies to the encapsulating node.</t>
+
+            <t>Modification of the header can result in impacts similar to those
             described in <xref target="ModifDataSec"/>.</t>
           </list></t>
       </section>
@@ -507,10 +492,10 @@
             be applied at the management plane, e.g., by manipulating network
             management packets. Furthermore, the integrity of IOAM-Data-Fields
             that are exported to a receiving entity can also be compromised.
-            Management plane attacks are not within the scope of this
-            document; the network management protocol is expected to include
+            Management plane attacks are out of scope;
+            the network management protocol is expected to include
             inherent security capabilities. The integrity of exported data is
-            also not within the scope of this document. It is expected that
+            also out of scope. It is expected that
             the specification of the export format will discuss the relevant
             security aspects.</t>
           </list></t>
@@ -623,7 +608,9 @@
 
       <t>The Integrity Protection header sits between an IOAM Option-Type
       header and its IOAM-Data-Fields, forming an equivalent Integrity-Protected
-      Option-Type. The Integrity Protection header is defined as shown in
+      Option-Type. This placement ensures that the Integrity Protection header
+      is part of the header, rather than a trailer after the IOAM-Data-Fields.
+      The Integrity Protection header is defined as shown in
       <xref target="Fig-IPH"/>.</t>
 
       <t><figure anchor="Fig-IPH" title="Integrity Protection header">
@@ -779,23 +766,35 @@
     </section>
 
     <section anchor="IPM" title="Integrity Protection Method">
-      <t>The Integrity Protection Method defined in this document leverages
-      symmetric keys for the integrity protection of IOAM-Data-Fields. This
-      method uses AES-GMAC <xref target="AES"/> <xref target="NIST.800-38D"/>,
-      a block cipher mode of operation providing data origin authentication,
-      which is also a specialization of the Galois/Counter Mode (GCM). The GCM
-      authenticated encryption operation has four inputs: a secret key, an
-      Initialization Vector (IV), a plaintext, and Additional Authenticated Data
-      (AAD). It has two outputs: a ciphertext whose length is identical to the
-      plaintext and an Authentication Tag. GMAC is the special case of GCM in
-      which the plaintext has a length of zero. Therefore, the empty ciphertext
-      output is ignored, and the only output is the Authentication Tag. For this
-      method, the Authentication Tag MUST NOT be truncated, meaning its size
-      MUST always be 16 octets (i.e., a full Authentication Tag). Below, the
-      GMAC Initialization Vector (IV) is referred to as the nonce, the
-      GMAC Authentication Tag is referred to as the Integrity Check Value
-      (ICV), and the GMAC Additional Authenticated Data (AAD) is referred to as
-      the AAD.</t>
+      <t>This document defines an Integrity Protection Method for
+      IOAM-Data-Fields using symmetric keys.</t>
+
+      <t>The method uses AES-GMAC <xref target="AES"/>
+      <xref target="NIST.800-38D"/>, a mode of operation that provides data
+      origin authentication and is a specialization of Galois/Counter Mode
+      (GCM). GCM takes as input a secret key, an Initialization Vector (IV), a
+      plaintext, and Additional Authenticated Data (AAD), and produces a
+      ciphertext and an Authentication Tag. GMAC is the special case of GCM with
+      zero-length plaintext; the ciphertext output is empty and ignored, and
+      only the Authentication Tag is produced.</t>
+
+      <t>For this method, the Authentication Tag MUST NOT be truncated and MUST
+      be 16 octets in length.</t>
+
+      <t>In this document, the GMAC Initialization Vector (IV) is referred to as
+      the nonce, the GMAC Authentication Tag is referred to as the Integrity
+      Check Value (ICV), and the GMAC Additional Authenticated Data (AAD) is
+      referred to as AAD.</t>
+
+      <t>Due to IOAM space constraints, maintaining a separate nonce and ICV for
+      each IOAM node participating in integrity protection is not practical.
+      This Integrity Protection Method uses a single Nonce field and a single
+      ICV field in the packet. The nonce is generated by the encapsulating node
+      according to the requirements defined in <xref target="IPM-KNM"/> and
+      remains unchanged. The ICV is iteratively updated by participating nodes
+      using the received ICV and their immutable IOAM-Data-Fields as inputs to
+      the GMAC operation. This design enables reconstruction of the integrity
+      chain by a Validator.</t>
 
       <section anchor="IPM-KNM" title="Key and Nonce Management">
         <t>In order to use this method and apply integrity protection, it is
@@ -807,7 +806,7 @@
         distributed to only the corresponding IOAM nodes and any Validator that
         needs to validate messages protected by that key. Except key rotation
         requirements, the details of key
-        generation and distribution are outside the scope of this document.</t>
+        generation and distribution are out of scope.</t>
 
         <t>In addition to key management, per-message nonces used with GMAC MUST
         be managed to prevent reuse of a key-nonce pair. Since reuse of a nonce
@@ -936,18 +935,21 @@
         <t>The encapsulating node MUST follow the instructions in
         <xref target="IPM-KNM"/> to generate a new nonce, which is then stored
         in the Nonce field of the Integrity Protection header (the Nonce Length
-        field is set accordingly). The Method ID field MUST be set to 0, as
+        field is set accordingly). In particular, nonce generation MUST comply
+        with the nonce uniqueness requirements defined in
+        <xref target="IPM-KNM"/>. The Method ID field MUST be set to 0, as
         defined in <xref target="IOAM-IP-registry"/>.</t>
 
-        <t>The ICV is the result of a GMAC operation
-        over a list of immutable header fields as defined in
-        <xref target="IPM-header-fields"/> (depending on the Integrity-Protected
-        Option-Type) and immutable IOAM-Data-Fields added by the encapsulating
-        node. In the case the Integrity-Protected Pre-allocated Trace
-        Option-Type is used, the encapsulating node includes the
-        IOAM-Data-Fields that correspond to itself, i.e., "node data list [n]"
-        (<xref target="RFC9197"/>, Section 4.4). The encapsulating node performs
-        the following operations:
+        <t>The initial ICV is the result of a GMAC operation, using the
+        encapsulating node's key and the nonce generated by the encapsulating
+        node. The AAD consists of a list of immutable header fields as defined
+        in <xref target="IPM-header-fields"/> (depending on the
+        Integrity-Protected Option-Type) and immutable IOAM-Data-Fields added by
+        the encapsulating node. In the case where the Integrity-Protected
+        Pre-allocated Trace Option-Type is used, the encapsulating node includes
+        the IOAM-Data-Fields that correspond to itself, i.e.,
+        "node data list [n]" (<xref target="RFC9197"/>, Section 4.4). The
+        encapsulating node performs the following operations:
           <list style="bullets">
             <t>AAD = (Header Fields || IOAM-Data-Fields)</t>
             <t>ICV = GMAC(Key, Nonce, AAD)</t>
@@ -960,26 +962,29 @@
       </section>
 
       <section anchor="IPM-Transit" title="Transit Node">
-        <t>A transit node MUST NOT generate a new nonce. Instead, it MUST use
-        the received Nonce field for its own GMAC operation. As a consequence,
-        a transit node MUST be able to detect nonces already used with its
-        current key to prevent key-nonce pair reuse, which is critical for GMAC.
-        Details on how this detection is implemented are outside the scope of
-        this document. If a transit node receives a Nonce field that has already
+        <t>A transit node MUST NOT generate a new nonce, as this would break the
+        integrity chain and prevent validation of IOAM-Data-Fields contributed
+        by previous nodes. It MUST use the received Nonce field for its own GMAC
+        operation. A transit node MUST NOT reuse a nonce with the same key, as
+        this is critical for GMAC security. Therefore, it MUST be able to detect
+        reuse of nonces with its current key.
+        Details on how this detection is implemented are out of scope.
+        If a transit node receives a Nonce field that has already
         been used with its current key, it MUST NOT change the contents of the
         Integrity Protection header and MUST NOT change the contents of the
         IOAM-Data-Fields. In other words, the transit node must not process the
         IOAM Integrity-Protected Option-Type.</t>
 
-        <t>The ICV is the result of a GMAC operation
-        over the received ICV field and immutable IOAM-Data-Fields added by the
-        transit node. In the case the Integrity-Protected Pre-allocated Trace
-        Option-Type is used, the transit node includes the IOAM-Data-Fields that
-        correspond to itself, i.e., "node data list [n-i]"
+        <t>The ICV is the result of a GMAC operation, using the transit node's
+        key and the received nonce. The AAD consists of the received ICV
+        (ICV_rx) and immutable IOAM-Data-Fields added by the transit node. In
+        the case where the Integrity-Protected Pre-allocated
+        Trace Option-Type is used, the transit node includes the
+        IOAM-Data-Fields that correspond to itself, i.e., "node data list [n-i]"
         (<xref target="RFC9197"/>, Section 4.4). The transit node performs the
         following operations:
           <list style="bullets">
-            <t>AAD = (ICV || IOAM-Data-Fields)</t>
+            <t>AAD = (ICV_rx || IOAM-Data-Fields)</t>
             <t>ICV = GMAC(Key, Nonce, AAD)</t>
           </list>
 
@@ -998,37 +1003,49 @@
         header. Also, a transit node MUST NOT modify the Method ID field, the
         Nonce Length field, or the Nonce field in the Integrity Protection
         header.</t>
+
+        <t>A transit node does not validate the integrity of previously added
+        IOAM-Data-Fields. Integrity validation is exclusively performed by a
+        Validator as defined in <xref target="IPM-Validator"/>.</t>
       </section>
 
       <section anchor="IPM-Decap" title="Decapsulating Node">
         <t>The decapsulating node MAY perform the function of the Validator. If
-        it does, please refer to <xref target="IPM-Validator"/>.</t>
+        it does, ignore this section and refer directly to
+        <xref target="IPM-Validator"/>.</t>
 
         <t>If the decapsulating node does not perform the function of the
         Validator, which is an alternative to put any Validator out of the
         forwarding path in case of performance concerns, the decapsulating node
         MUST send the entire IOAM Integrity-Protected Option-Type to a
-        Validator. The method to send it to a Validator is out of scope for this
-        document. Before that, the decapsulating node updates the ICV field in
-        the Integrity Protection header. The ICV is the
-        result of a GMAC operation over the received ICV field and immutable
-        IOAM-Data-Fields added by the decapsulating node. In the case the
-        Integrity-Protected Pre-allocated Trace Option-Type is used, the
-        decapsulating node includes the IOAM-Data-Fields that correspond to
-        itself, i.e., "node data list [n-i]" (<xref target="RFC9197"/>,
-        Section 4.4). Since the decapsulating node MUST use the
-        received Nonce field for its own GMAC operation, it MUST be able to
-        detect nonces already used with its current key to prevent key-nonce
-        pair reuse, which is critical for GMAC. Details on how this detection is
-        implemented are outside the scope of this document. If a decapsulating
+        Validator. The method to send it to a Validator is out of scope.</t>
+
+        <t>The decapsulating node MUST NOT generate a new nonce, as
+        this would break the integrity chain and prevent validation of
+        IOAM-Data-Fields contributed by previous nodes. It MUST use the received
+        Nonce field for its own GMAC operation. A decapsulating node MUST NOT
+        reuse a nonce with the same key, as this is critical for GMAC security.
+        Therefore, it MUST be able to detect reuse of nonces with its current
+        key. Details on how this detection is
+        implemented are out of scope. If a decapsulating
         node receives a Nonce field that has already been used with its current
         key, it MUST NOT change the contents of the Integrity Protection header
         and MUST NOT change the contents of the IOAM-Data-Fields. In other
         words, the decapsulating node must not process the IOAM
-        Integrity-Protected Option-Type. Otherwise, the decapsulating node
-        performs the following operations:
+        Integrity-Protected Option-Type.</t>
+
+        <t>The decapsulating node updates the ICV field in
+        the Integrity Protection header. The ICV is the
+        result of a GMAC operation, using the decapsulating node's key and the
+        received nonce. The AAD consists of the received ICV (ICV_rx) and
+        immutable IOAM-Data-Fields added by the decapsulating node. In the case
+        where the Integrity-Protected Pre-allocated Trace Option-Type is used,
+        the decapsulating node includes the IOAM-Data-Fields that correspond to
+        itself, i.e., "node data list [n-i]" (<xref target="RFC9197"/>,
+        Section 4.4). The decapsulating node performs the
+        following operations:
           <list style="bullets">
-            <t>AAD = (ICV || IOAM-Data-Fields)</t>
+            <t>AAD = (ICV_rx || IOAM-Data-Fields)</t>
             <t>ICV = GMAC(Key, Nonce, AAD)</t>
           </list>
 
@@ -1059,29 +1076,51 @@
         general (more specifically, replay of old IOAM-Data-Fields) is still
         needed. To this end, a Validator MUST be able to detect nonces already
         used with specific keys during validation to prevent replays. Details on
-        how this detection is implemented are outside the scope of this
-        document. If a Validator receives a Nonce field that has already been
+        how this detection is implemented are out of scope.
+        If a Validator receives a Nonce field that has already been
         used with a specific key during validation, it MUST consider the ICV as
         invalid and ignore the next steps.</t>
 
-        <t>To validate an ICV, a Validator MUST recompute it by iteratively
-        following the previous steps (in the same order) of this Integrity
-        Protection Method, using the respective symmetric keys received
-        previously. The recomputed ICV is then compared to the received ICV
-        field. As a result, a Validator can perform an integrity check on the
+        <t>To validate an ICV, a Validator MUST recompute the cumulative ICV by
+        replaying the sequence of GMAC operations in the same order as performed
+        by the IOAM nodes, using the IOAM-Data-Fields contained in the packet
+        and the correponding keys associated with each node. Since only the
+        latest ICV is carried, each step uses the ICV produced by the previous
+        step as input to the next computation. The recomputed ICV is then
+        compared with the ICV field (ICV_rx) carried in the packet. The
+        Validator performs the following operations:</t>
+
+        <t>Step 0 (encapsulating node)
+          <list style="bullets">
+            <t>AAD_0 = (Header Fields || IOAM-Data-Fields_0)</t>
+            <t>ICV_0 = GMAC(Key_0, Nonce, AAD_0)</t>
+          </list></t>
+
+        <t>Step i (i-th node)
+          <list style="bullets">
+            <t>AAD_i = (ICV_i-1 || IOAM-Data-Fields_i)</t>
+            <t>ICV_i = GMAC(Key_i, Nonce, AAD_i)</t>
+          </list></t>
+
+        <t>Step n (n-th node, i.e., the Validator)
+          <list style="bullets">
+            <t>return (ICV_n-1 == ICV_rx)</t>
+          </list></t>
+
+        <t>As a result, a Validator can perform an integrity check on the
         IOAM-Data-Fields and report whether any modification is detected.
         The validation is one-step in
         some cases (e.g., with POT Type-0 or E2E), where only the encapsulating
         node updates the ICV according to the definition of this method. For
         other cases where transit nodes also update the ICV (e.g., with Trace
-        Option-Types), a Validator MUST identify these transit nodes
+        Option-Types), a Validator MUST be able to identify these transit nodes
         to look up their respective keys. For that, a unique identifier of the
         node, such as the "node_id" (<xref target="RFC9197"/>, Section 4.4.2)
         for Trace Option-Types, MUST be included in
         IOAM-Data-Fields. Regardless of the Option-Type, the Nonce field allows
         the encapsulating node to be identified (<xref target="IPM-KNM"/>).
         Details on how the mapping between those identifiers and keys is
-        implemented on a Validator are outside the scope of this document.</t>
+        implemented on a Validator are out of scope.</t>
       </section>
     </section>
 
@@ -1205,42 +1244,41 @@
       </section>
 
       <section title="Scalability and Performance">
-        <t>There is an additional per-packet processing for each node that uses
-        the Integrity Protection Method defined in this document, in particular
-        for any Validator with Integrity-Protected Option-Types where transit
-        nodes participate in integrity protection (e.g., Integrity-Protected
-        Trace Option-Types). Inappropriate
-        use of this Integrity Protection Method could overload nodes and cause
-        service degradation or failure. Therefore, relevant metrics (e.g., CPU
-        and memory utilization) SHOULD be monitored to detect misbehaving
-        implementations. Operators deploying IOAM with this
-        Integrity Protection Method MUST ensure that such overload situations
-        are avoided. This might, for example, be achieved by applying IOAM only
-        to a subset of the entire traffic, keeping in mind that only that IOAM
-        subset would be integrity protected. In addition, integrity protection
-        workload could be distributed across multiple Validators, enabling
-        validation jobs to be parallelized and the processing load to be shared.
-        </t>
+        <t>Each node that applies the Integrity Protection Method defined in
+        this document incurs additional per-packet processing. This overhead is
+        increased for Validators with Integrity-Protected Option-Types that
+        require transit node participation (e.g., Integrity-Protected Trace
+        Option-Types).</t>
+
+        <t>Improper use of this method can overload nodes and result in service
+        degradation or failure. Implementations SHOULD monitor relevant metrics
+        (e.g., CPU and memory utilization) to detect abnormal behavior.</t>
+
+        <t>Operators deploying this method MUST ensure that overload conditions
+        are avoided. This can be achieved by limiting IOAM insertion to a subset
+        of traffic, noting that only such traffic is integrity-protected.
+        Processing load MAY be distributed across multiple Validators to enable
+        parallel validation and load sharing.</t>
       </section>
 
       <section title="Migration">
-        <t>Option-Types defined in <xref target="RFC9197"/> and
+        <t>Option-Types defined in <xref target="RFC9197"/> and the
         Integrity-Protected Option-Types defined in this document are not
-        mutually exclusive. They can both coexist inside an IOAM-Domain, as
-        integrity protection is seen as a feature running on top of IOAM. For
-        example, an implementation might support the simultaneous configuration
-        of an IOAM-Namespace with the Pre-allocated Trace Option-Type and
-        another IOAM-Namespace with the Integrity-Protected Pre-allocated Trace
-        Option-Type.</t>
+        mutually exclusive and could coexist within the same IOAM-Domain.
+        Integrity protection is an extension to IOAM.</t>
+
+        <t>An implementation could support multiple IOAM-Namespaces
+        concurrently, for example, one IOAM-Namespace using the Pre-allocated
+        Trace Option-Type and another using the Integrity-Protected
+        Pre-allocated Trace Option-Type.</t>
       </section>
 
       <section title="MTU">
         <t><xref target="RFC9197"/> discusses MTU considerations, as IOAM data
-        is carried within packets. Similarly, additional space
-        required to prove integrity of the IOAM-Data-Fields SHOULD be
-        optimal, i.e., should not exceed the MTU
-        inside the IOAM-Domain or have adverse effect on packet processing.
-        Specifically, fragmentation should be avoided.</t>
+        is carried within packets. Similarly, the additional space required to
+        provide integrity protection of the IOAM-Data-Fields MUST NOT cause
+        packets to exceed the applicable MTU within the IOAM-Domain and SHOULD
+        minimize adverse effects on packet processing.</t>
       </section>
     </section>
 
@@ -1252,47 +1290,36 @@
       (<xref target="IPM"/>) leverages symmetric keys and uses AES-GMAC
       <xref target="AES"/> <xref target="NIST.800-38D"/>. Security
       considerations regarding key and nonce management are discussed in
-      <xref target="IPM-KNM"/>.</t>
+      <xref target="IPM-KNM"/>. In particular, a node MUST NOT reuse a nonce
+      with the same key.</t>
 
-      <t>Packet reordering or duplication does not compromise the safety of the
-      Integrity Protection Method defined in this document, as key-nonce reuse
-      is not allowed. However, reordered or duplicated packets are not
-      considered for integrity protection, resulting in no IOAM data being
-      inserted for those packets. This behavior depends on the replay protection
-      window implemented by a node, which determines the tolerance for packet
-      reordering. </t>
+      <t>Packet reordering or duplication does not compromise the Integrity
+      Protection Method defined in this document, as key-nonce reuse is
+      prohibited. Reordered or duplicated packets are not processed for
+      integrity protection and no IOAM data is inserted. This behavior depends
+      on the replay protection window implemented by a node. Such protection
+      window determines the tolerance for packet reordering.</t>
 
-      <t>A compromised transit node could remove the Integrity Protection header
-      and replace the IOAM Integrity-Protected Option-Type with the unprotected
-      analogue IOAM Option-Type, in order to be able to modify IOAM-Data-Fields
-      and bypass the Validator. A compromised IOAM transit node could also
-      reinitialize both the Nonce and ICV fields in the Integrity Protection
-      header, in order to pretend to be an encapsulating node and fool the
-      Validator. To avoid such situations, any Validator MUST know all IOAM
-      Namespace-IDs for which the integrity protection is enabled. For each of
-      them, any Validator MUST know the corresponding encapsulating nodes and,
-      for each encapsulating node, which Option-Types are added. When enabled,
-      the integrity protection MUST be applied to the entire corresponding IOAM
-      set, not a subset. Implementation
-      details are outside the scope of this document. Also, as discussed in
-      <xref target="DelHeaderSec"/>, a compromised transit node could entirely
-      remove IOAM Option-Types. This document does not provide any mitigation
-      against this threat as it is out of scope, and such situations SHOULD be
-      handled by the security mechanisms of another layer.</t>
+      <t>A compromised transit node can remove the Integrity Protection header
+      and replace an IOAM Integrity-Protected Option-Type with its unprotected
+      equivalent to modify IOAM-Data-Fields and bypass validation. It can also
+      reinitialize the Nonce and ICV to impersonate an encapsulating node. To
+      mitigate these threats, a Validator MUST know all IOAM Namespace-IDs with
+      integrity protection enabled, the corresponding encapsulating nodes, and
+      the Option-Types they add. Integrity protection MUST be applied to the
+      entire IOAM set for a given Namespace-ID. Implementation details are out
+      of scope. As noted in <xref target="DelHeaderSec"/>, a compromised transit
+      node can remove IOAM Option-Types; mitigation is out of scope and SHOULD
+      be provided by the protocol that encapsulates IOAM.</t>
 
-      <t>A compromised Validator could use specific keys to forge or modify
-      IOAM-Data-Fields, as if it passed through the encapsulating or transit
-      nodes in question. It could also render incorrect assessments of an ICV's
-      (in)validity. Since a Validator is a key trusted entity in this integrity
-      protection system, there is no recourse to prevent such cases. In
-      contrast, compromised encapsulating or transit nodes could forge or drop
-      packets they process but cannot impersonate other IOAM nodes or modify
-      integrity protected IOAM-Data-Fields produced by other nodes without being
-      detected by a Validator. In particular, a transit node is limited in what
-      forgery can be made without detection because a Validator will validate
-      the encapsulating node's ICV as part of validating the final ICV, thus
-      modification to content protected by the encapsulating node would be
-      detected at the time of validation.</t>
+      <t>A compromised Validator can forge or modify IOAM-Data-Fields and
+      produce incorrect validation results. As a trusted entity, such behavior
+      cannot be prevented by this Integrity Protection Method. Compromised
+      encapsulating or transit nodes can forge or drop packets but cannot
+      impersonate other IOAM nodes or modify integrity-protected
+      IOAM-Data-Fields without detection by a Validator. A transit node's
+      ability to forge data is limited, as validation includes the encapsulating
+      node's ICV.</t>
 
       <t>The Integrity Protection Method defined in this document is intended
       for Intra-IOAM-Domain use cases (i.e., no confidentiality, integrity
@@ -1361,7 +1388,6 @@
     <references title="Informative References">
       &RFC7276;
       &RFC7384;
-      &RFC7799;
       &RFC9055;
       &RFC9322;
       &RFC9326;
